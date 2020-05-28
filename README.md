@@ -4,14 +4,16 @@
 [etaoin](https://github.com/igrishaev/etaoin), a pure Clojure webdriver protocol
 implementation.
 
-## Install
+This is work in progress.
 
-The following installation methods are available:
+<!-- ## Install -->
 
-- Download a binary from Github releases
-- With [brew](https://brew.sh/): `brew install borkdude/brew/pod-babashka-<db>`
-where `<db>` must be substited with the database type, either `hsqldb` or
-`postgresql`.
+<!-- The following installation methods are available: -->
+
+<!-- - Download a binary from Github releases -->
+<!-- - With [brew](https://brew.sh/): `brew install borkdude/brew/pod-babashka-<db>` -->
+<!-- where `<db>` must be substited with the database type, either `hsqldb` or -->
+<!-- `postgresql`. -->
 
 ## Compatibility
 
