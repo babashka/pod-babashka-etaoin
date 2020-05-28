@@ -53,5 +53,3 @@ Run `script/test`.
 Copyright © 2020 Michiel Borkent
 
 Distributed under the EPL License. See LICENSE.
-
-[HyperSQL license](http://hsqldb.org/web/hsqlLicense.html)
