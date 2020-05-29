@@ -39,6 +39,8 @@ The pods expose these namespaces with vars:
 (eta/quit driver)
 ```
 
+Also see [example.clj](example.clj).
+
 ## Dev
 
 ### Build
