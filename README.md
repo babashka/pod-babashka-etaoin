@@ -19,16 +19,10 @@ This is work in progress.
 
 Pods from this repo require babashka v0.0.96 or later.
 
-## Available vars
-
-The pods expose these namespaces with vars:
-
-- `pod.babashka.etaoin`:
-  - `firefox`: opens a Firefox browser. Requires `geckodriver` to be
-    installed. Returns browser handle.
-  - `go`: given a browser handle and url, navigates browser to that url.
-
 ## Run
+
+The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`.
+The `etaoin.keys` namespace is exposed as `pod.babashka.etaoin.keys`.
 
 ``` clojure
 (require '[babashka.pods :as pods])
