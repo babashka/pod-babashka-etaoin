@@ -17,7 +17,7 @@ This is work in progress.
 
 ## Compatibility
 
-Pods from this repo require babashka v0.0.96 or later.
+This pod requires babashka v0.0.96 or later. Additionally you might have to install `geckodriver` for Firefox, or `chromedriver` for Chrome.
 
 ## Run
 
