@@ -4,4 +4,4 @@
 (require '[pod.babashka.etaoin :as eta])
 (def driver (eta/firefox))
 (eta/go driver "https://michielborkent.nl")
-
+(eta/quit driver)

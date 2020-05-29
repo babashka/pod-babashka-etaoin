@@ -45,8 +45,13 @@
 (defn go [browser-id url]
   (eta/go (get @browsers browser-id) url))
 
+(defn quit [browser-id]
+  (eta/quit (get @browsers browser-id))
+  browser-id)
+
 (def lookup {'pod.babashka.etaoin/firefox firefox
-             'pod.babashka.etaoin/go go})
+             'pod.babashka.etaoin/go go
+             'pod.babashka.etaoin/quit quit})
 
 (def describe-map
   (walk/postwalk
@@ -56,7 +61,8 @@
    `{:format :edn
      :namespaces [{:name pod.babashka.etaoin
                    :vars [{:name firefox}
-                          {:name go}]}]
+                          {:name go}
+                          {:name quit}]}]
      :opts {:shutdown {}}}))
 
 (debug describe-map)
