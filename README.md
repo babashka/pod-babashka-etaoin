@@ -21,9 +21,9 @@ Pods from this repo require babashka v0.0.96 or later.
 
 ## Run
 
-The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`.
 
-The `etaoin.keys` namespace is exposed as `pod.babashka.etaoin.keys`.
+The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`. The
+`etaoin.keys` namespace is exposed as `pod.babashka.etaoin.keys`.
 
 ``` clojure
 (require '[babashka.pods :as pods])
