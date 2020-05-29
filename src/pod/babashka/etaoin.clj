@@ -1,4 +1,5 @@
 (ns pod.babashka.etaoin
+  {:clj-kondo/config '{:lint-as {pod.babashka.etaoin/def-etaoin clojure.core/def}}}
   (:refer-clojure :exclude [read read-string])
   (:require [bencode.core :as bencode]
             [clojure.edn :as edn]
@@ -37,13 +38,29 @@
 (defn firefox []
   (let [browser (eta/firefox)
         browser-id (next-browser-id)]
-    (debug "browser id" browser-id)
     (swap! browsers assoc browser-id browser)
-    (debug "browser id" browser-id)
     browser-id))
 
-(defn go [browser-id url]
-  (eta/go (get @browsers browser-id) url))
+(defmacro def-etaoin
+  ([name] `(def-etaoin ~name false))
+  ([name return?]
+   `(defn ~name [browser-id# ~'& args#]
+      (let [browser# (get @browsers browser-id#)]
+        (let [ret# (apply ~(symbol "etaoin.api" (str name)) browser# args#)]
+          (if ~return?
+            ret#
+            browser-id#))))))
+
+(def-etaoin go)
+(def-etaoin wait-visible)
+(def-etaoin fill)
+(def-etaoin click)
+(def-etaoin get-url true)
+(def-etaoin get-title true)
+(def-etaoin has-text? true)
+(def-etaoin back)
+(def-etaoin forward)
+(def-etaoin refresh)
 
 (defn quit [browser-id]
   (eta/quit (get @browsers browser-id))
@@ -51,6 +68,15 @@
 
 (def lookup {'pod.babashka.etaoin/firefox firefox
              'pod.babashka.etaoin/go go
+             'pod.babashka.etaoin/wait-visible wait-visible
+             'pod.babashka.etaoin/fill fill
+             'pod.babashka.etaoin/click click
+             'pod.babashka.etaoin/get-url get-url
+             'pod.babashka.etaoin/get-title get-title
+             'pod.babashka.etaoin/has-text? has-text?
+             'pod.babashka.etaoin/back back
+             'pod.babashka.etaoin/forward forward
+             'pod.babashka.etaoin/refresh refresh
              'pod.babashka.etaoin/quit quit})
 
 (def describe-map
@@ -59,9 +85,20 @@
      (if (ident? v) (name v)
          v))
    `{:format :edn
-     :namespaces [{:name pod.babashka.etaoin
+     :namespaces [{:name pod.babashka.etaoin.keys
+                   :vars [{:name enter :code "(def enter \\uE007)"}]}
+                  {:name pod.babashka.etaoin
                    :vars [{:name firefox}
                           {:name go}
+                          {:name wait-visible}
+                          {:name fill}
+                          {:name click}
+                          {:name get-url}
+                          {:name get-title}
+                          {:name has-text?}
+                          {:name back}
+                          {:name forward}
+                          {:name refresh}
                           {:name quit}]}]
      :opts {:shutdown {}}}))
 
