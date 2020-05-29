@@ -1,6 +1,7 @@
 # pod-babashka-etaoin
 
-[Babashka](https://github.com/borkdude/babashka) pod wrapping
+[Babashka](https://github.com/borkdude/babashka)
+[pod](https://github.com/babashka/babashka.pods) wrapping
 [Etaoin](https://github.com/igrishaev/etaoin), a pure Clojure webdriver protocol
 implementation.
 
