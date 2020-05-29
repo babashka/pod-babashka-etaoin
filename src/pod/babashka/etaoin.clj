@@ -35,11 +35,32 @@
 
 (def browsers (atom {}))
 
-(defn firefox []
-  (let [browser (eta/firefox)
-        browser-id (next-browser-id)]
-    (swap! browsers assoc browser-id browser)
-    browser-id))
+(defn boot-driver
+  ([type]
+   (boot-driver type {}))
+  ([type opt]
+   (let [browser (eta/boot-driver type opt)
+         browser-id (next-browser-id)]
+     (swap! browsers assoc browser-id browser)
+     browser-id)))
+
+(def firefox (partial boot-driver :firefox))
+(def edge    (partial boot-driver :edge))
+(def chrome  (partial boot-driver  :chrome))
+(def phantom (partial boot-driver :phantom))
+(def safari  (partial boot-driver :safari))
+
+(defn chrome-headless
+  ([]
+   (chrome-headless {}))
+  ([opt]
+   (boot-driver :chrome (assoc opt :headless true))))
+
+(defn firefox-headless
+  ([]
+   (firefox-headless {}))
+  ([opt]
+   (boot-driver :firefox (assoc opt :headless true))))
 
 (defmacro def-etaoin
   ([name] `(def-etaoin ~name false))
@@ -66,18 +87,18 @@
   (eta/quit (get @browsers browser-id))
   browser-id)
 
-(def lookup {'pod.babashka.etaoin/firefox firefox
-             'pod.babashka.etaoin/go go
-             'pod.babashka.etaoin/wait-visible wait-visible
-             'pod.babashka.etaoin/fill fill
-             'pod.babashka.etaoin/click click
-             'pod.babashka.etaoin/get-url get-url
-             'pod.babashka.etaoin/get-title get-title
-             'pod.babashka.etaoin/has-text? has-text?
-             'pod.babashka.etaoin/back back
-             'pod.babashka.etaoin/forward forward
-             'pod.babashka.etaoin/refresh refresh
-             'pod.babashka.etaoin/quit quit})
+(def syms '[boot-driver chrome firefox edge phantom safari
+            chrome-headless firefox-headless
+            go wait-visible fill click get-url
+            get-title has-text? back forward
+            refresh quit])
+
+(def lookup
+  (zipmap (map (fn [sym]
+                 (symbol "pod.babashka.etaoin"
+                         (name sym)))
+               syms)
+          (map resolve syms)))
 
 (def describe-map
   (walk/postwalk
@@ -88,18 +109,9 @@
      :namespaces [{:name pod.babashka.etaoin.keys
                    :vars [{:name enter :code "(def enter \\uE007)"}]}
                   {:name pod.babashka.etaoin
-                   :vars [{:name firefox}
-                          {:name go}
-                          {:name wait-visible}
-                          {:name fill}
-                          {:name click}
-                          {:name get-url}
-                          {:name get-title}
-                          {:name has-text?}
-                          {:name back}
-                          {:name forward}
-                          {:name refresh}
-                          {:name quit}]}]
+                   :vars ~(mapv (fn [sym]
+                                  {:name sym})
+                                syms)}]
      :opts {:shutdown {}}}))
 
 (debug describe-map)

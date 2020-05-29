@@ -1,3 +1,4 @@
 /target
 /pod-babashka-etaoin
 /.cpcache
+.lein-repl-history

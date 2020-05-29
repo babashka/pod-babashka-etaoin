@@ -5,7 +5,9 @@
 (require '[pod.babashka.etaoin :as eta]
          '[pod.babashka.etaoin.keys :as k])
 
-(def driver (eta/firefox)) ;; here, a Firefox window should appear
+#_(def driver (eta/firefox))  ;; here, a Firefox window should appear
+#_(def driver (eta/chrome))
+(def driver (eta/firefox-headless))
 
 ;; let's perform a quick Wiki session
 (eta/go driver "https://en.wikipedia.org/")
