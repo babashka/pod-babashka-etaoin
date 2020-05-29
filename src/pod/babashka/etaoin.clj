@@ -35,6 +35,12 @@
 
 (def browsers (atom {}))
 
+(defn create-driver [& args]
+  (let [browser (apply eta/create-driver args)
+        browser-id (next-browser-id)]
+    (swap! browsers assoc browser-id browser)
+    browser-id))
+
 (defn boot-driver
   ([type]
    (boot-driver type {}))
@@ -82,16 +88,20 @@
 (def-etaoin back)
 (def-etaoin forward)
 (def-etaoin refresh)
-
-(defn quit [browser-id]
-  (eta/quit (get @browsers browser-id))
-  browser-id)
+(def-etaoin quit)
+(def-etaoin stop-driver)
+(def-etaoin connect-driver)
+(def-etaoin disconnect-driver)
+(def-etaoin run-driver)
 
 (def syms '[boot-driver chrome firefox edge phantom safari
             chrome-headless firefox-headless
             go wait-visible fill click get-url
             get-title has-text? back forward
-            refresh quit])
+            refresh
+            quit stop-driver
+            connect-driver disconnect-driver
+            create-driver run-driver])
 
 (def lookup
   (zipmap (map (fn [sym]
