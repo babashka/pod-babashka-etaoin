@@ -87,16 +87,12 @@ fi"}}
   (ordered-map
    :version 2.1,
    :jobs (ordered-map
-          :hsqldb-linux (assoc-in linux [:environment :POD_DB_TYPE] "hsqldb")
-          :hsqldb-mac  (assoc-in mac [:environment :POD_DB_TYPE] "hsqldb")
-          :postgresql-linux (assoc-in linux [:environment :POD_DB_TYPE] "postgresql")
-          :postgresql-mac  (assoc-in mac [:environment :POD_DB_TYPE] "postgresql")),
+          :linux linux
+          :mac mac),
    :workflows (ordered-map
                :version 2
-               :ci {:jobs ["hsqldb-linux"
-                           "hsqldb-mac"
-                           "postgresql-linux"
-                           "postgresql-mac"]})))
+               :ci {:jobs ["linux"
+                           "mac"]})))
 
 (require '[clj-yaml.core :as yaml])
 (spit ".circleci/config.yml"
