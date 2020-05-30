@@ -27,7 +27,6 @@ sudo ./linux-install-1.10.1.447.sh"}}
                :environment (ordered-map :LEIN_ROOT "true"
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java8-19.3.1"
                                          :BABASHKA_PLATFORM "linux"
-                                         :BABASHKA_TEST_ENV "native"
                                          :BABASHKA_XMX "-J-Xmx7g"
                                          :POD_TEST_ENV "native"
                                          :resource_class "large")

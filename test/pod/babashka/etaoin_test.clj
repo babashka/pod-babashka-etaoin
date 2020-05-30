@@ -2,7 +2,12 @@
   (:require [clojure.test :refer [deftest is]]
             [babashka.pods :as pods]))
 
-(pods/load-pod ["lein" "run" "-m" "pod.babashka.etaoin"])
+(if(= "native" (System/getenv "POD_TEST_ENV"))
+  (do (pods/load-pod "./pod-babashka-etaoin")
+      (println "Testing native version"))
+  (do (pods/load-pod ["lein" "run" "-m" "pod.babashka.etaoin"])
+      (println "Testing JVM version")))
+
 (require '[pod.babashka.etaoin :as eta]
          '[pod.babashka.etaoin.keys :as k])
 
