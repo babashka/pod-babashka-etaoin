@@ -79,9 +79,12 @@
             browser-id#))))))
 
 (def-etaoin go)
+(def-etaoin wait-exists)
 (def-etaoin wait-visible)
-(def-etaoin fill)
-(def-etaoin click)
+(def-etaoin wait-running)
+(def-etaoin wait-has-class)
+(def-etaoin wait-has-text)
+(def-etaoin wait-has-alert)
 (def-etaoin get-url true)
 (def-etaoin get-title true)
 (def-etaoin has-text? true)
@@ -93,15 +96,36 @@
 (def-etaoin connect-driver)
 (def-etaoin disconnect-driver)
 (def-etaoin run-driver)
+(def-etaoin screenshot-element)
+(def-etaoin screenshot)
+(def-etaoin submit)
+(def-etaoin upload-file)
+(def-etaoin clear)
+(def-etaoin clear-el)
+(def-etaoin fill-human)
+(def-etaoin fill-human-el)
+(def-etaoin fill-multi)
+(def-etaoin fill)
+(def-etaoin fill-active)
+(def-etaoin fill-el)
+(def-etaoin click)
+(def-etaoin click-visible)
 
 (def syms '[boot-driver chrome firefox edge phantom safari
             chrome-headless firefox-headless
-            go wait-visible fill click get-url
-            get-title has-text? back forward
-            refresh
             quit stop-driver
             connect-driver disconnect-driver
-            create-driver run-driver])
+            create-driver run-driver
+            go
+            wait-visible wait-running wait-has-class
+            wait-has-text wait-has-alert wait-exists
+            get-url get-title has-text?
+            back forward refresh
+            screenshot-element screenshot
+            submit upload-file
+            clear clear-el
+            fill-human fill-human-el fill-multi fill fill-active fill-el
+            click click-visible])
 
 (def lookup
   (zipmap (map (fn [sym]
