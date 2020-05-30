@@ -3,8 +3,26 @@
 (ns generate-circleci
   (:require [flatland.ordered.map :refer [ordered-map]]))
 
+(def jvm
+  (ordered-map :docker [{:image "circleci/clojure:lein-2.8.1-browsers"}]
+               :working_directory "~/repo"
+               :environment (ordered-map :LEIN_ROOT "true")
+               :steps ["checkout"
+                       {:run {:name "Pull Submodules",
+                              :command "git submodule init\ngit submodule update\n"}}
+                       {:restore_cache {:keys ["jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"]}}
+                       {:run {:name "Install Clojure",
+                              :command "
+wget https://download.clojure.org/install/linux-install-1.10.1.447.sh
+chmod +x linux-install-1.10.1.447.sh
+sudo ./linux-install-1.10.1.447.sh"}}
+                       {:run {:name "Run tests",
+                              :command "script/test\n"}}
+                       {:save_cache {:paths ["~/.m2"],
+                                     :key "jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}]))
+
 (def linux
-  (ordered-map :docker [{:image "circleci/clojure:lein-2.8.1"}]
+  (ordered-map :docker [{:image "circleci/clojure:lein-2.8.1-browsers"}]
                :working_directory "~/repo"
                :environment (ordered-map :LEIN_ROOT "true"
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java8-19.3.1"
@@ -73,7 +91,9 @@ fi"}}
                        {:run {:name "Build binary",
                               :command "# script/uberjar\nscript/compile\n",
                               :no_output_timeout "30m"}}
-                       {:run {:name "Run tests",
+                       ;; tests are skipped, until we figure out how to install
+                       ;; Firefox headless on CI
+                       #_{:run {:name "Run tests",
                               :command "script/test\n"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
@@ -87,11 +107,13 @@ fi"}}
   (ordered-map
    :version 2.1,
    :jobs (ordered-map
+          :jvm jvm
           :linux linux
           :mac mac),
    :workflows (ordered-map
                :version 2
-               :ci {:jobs ["linux"
+               :ci {:jobs ["jvm"
+                           "linux"
                            "mac"]})))
 
 (require '[clj-yaml.core :as yaml])

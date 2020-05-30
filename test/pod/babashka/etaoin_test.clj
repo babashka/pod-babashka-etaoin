@@ -1,0 +1,40 @@
+(ns pod.babashka.etaoin-test
+  (:require [clojure.test :refer [deftest is]]
+            [babashka.pods :as pods]))
+
+(pods/load-pod ["lein" "run" "-m" "pod.babashka.etaoin"])
+(require '[pod.babashka.etaoin :as eta]
+         '[pod.babashka.etaoin.keys :as k])
+
+(deftest etaoin-test
+  (let [driver (eta/firefox-headless)]
+    ;; let's perform a quick Wiki session
+    (eta/go driver "https://en.wikipedia.org/")
+    (eta/wait-visible driver [{:id :simpleSearch} {:tag :input :name :search}])
+
+    ;; search for something
+    (eta/fill driver {:tag :input :name :search} "Clojure programming language")
+    (eta/fill driver {:tag :input :name :search} k/enter)
+    (eta/wait-visible driver {:class :mw-search-results})
+
+    ;; I'm sure the first link is what I was looking for
+    (eta/click driver [{:class :mw-search-results} {:class :mw-search-result-heading} {:tag :a}])
+    (eta/wait-visible driver {:id :firstHeading})
+
+    (is (= "https://en.wikipedia.org/wiki/Clojure"
+           (eta/get-url driver)))
+
+    (is (= "Clojure - Wikipedia" (eta/get-title driver)))
+
+    (is (eta/has-text? driver "Clojure"))
+
+    ;; navigate on history
+    (eta/back driver)
+    (eta/forward driver)
+    (eta/refresh driver)
+    (is (= "Clojure - Wikipedia" (eta/get-title driver)))
+
+    (eta/quit driver)))
+
+
+
