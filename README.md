@@ -5,23 +5,22 @@
 [Etaoin](https://github.com/igrishaev/etaoin), a pure Clojure webdriver protocol
 implementation.
 
-This is work in progress.
+This is work in progress. The API contains the most essential Etaoin functions,
+but some may be missing, for which I will happily accept PRs.
 
-<!-- ## Install -->
+## Install
 
-<!-- The following installation methods are available: -->
+The following installation methods are available:
 
-<!-- - Download a binary from Github releases -->
-<!-- - With [brew](https://brew.sh/): `brew install borkdude/brew/pod-babashka-<db>` -->
-<!-- where `<db>` must be substited with the database type, either `hsqldb` or -->
-<!-- `postgresql`. -->
+- Download a binary from Github releases
+- With [brew](https://brew.sh/): `brew install borkdude/brew/pod-babashka-etaoin`
 
 ## Compatibility
 
-This pod requires babashka v0.0.96 or later. Additionally you might have to install `geckodriver` for Firefox, or `chromedriver` for Chrome.
+This pod requires babashka v0.0.96 or later. Additionally you might have to
+install `geckodriver` for Firefox, or `chromedriver` for Chrome.
 
 ## Run
-
 
 The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`. The
 `etaoin.keys` namespace is exposed as `pod.babashka.etaoin.keys`.
