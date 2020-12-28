@@ -13,8 +13,9 @@ export PATH=$GRAALVM_HOME/bin:$PATH
 POD_LEIN_PROFILES="+uberjar"
 POD_NAME="pod-babashka-etaoin"
 POD_REFLECTION_CONFIG="reflection.json"
+POD_VERSION="$(cat resources/POD_VERSION)"
 
-JAR="target/pod-babashka-etaoin-0.0.1-SNAPSHOT-standalone.jar"
+JAR="target/pod-babashka-etaoin-$POD_VERSION-standalone.jar"
 
 echo "$POD_LEIN_PROFILES"
 echo "$POD_REFLECTION_CONFIG"
@@ -30,7 +31,6 @@ $GRAALVM_HOME/bin/native-image \
     -J-Dclojure.compiler.direct-linking=true \
     "-H:IncludeResources=POD_BABASHKA_SQL_VERSION" \
     -H:ReflectionConfigurationFiles="$POD_REFLECTION_CONFIG" \
-    --initialize-at-run-time=java.lang.Math\$RandomNumberGeneratorHolder \
     --initialize-at-build-time  \
     -H:Log=registerResource: \
     --verbose \
