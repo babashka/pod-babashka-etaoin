@@ -4,7 +4,7 @@
   (:require [flatland.ordered.map :refer [ordered-map]]))
 
 (def jvm
-  (ordered-map :docker [{:image "circleci/clojure:lein-2.8.1-browsers"}]
+  (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
                :working_directory "~/repo"
                :environment (ordered-map :LEIN_ROOT "true")
                :steps ["checkout"
@@ -22,10 +22,10 @@ sudo ./linux-install-1.10.1.447.sh"}}
                                      :key "jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}]))
 
 (def linux
-  (ordered-map :docker [{:image "circleci/clojure:lein-2.8.1-browsers"}]
+  (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
                :working_directory "~/repo"
                :environment (ordered-map :LEIN_ROOT "true"
-                                         :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-20.3.0"
+                                         :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.0.0"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_XMX "-J-Xmx7g"
                                          :POD_TEST_ENV "native"
@@ -46,9 +46,9 @@ sudo ./linux-install-1.10.1.447.sh"}}
                        {:run {:name "Download GraalVM",
                               :command "
 cd ~
-if ! [ -d graalvm-ce-java11-20.3.0 ]; then
-  curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.3.0/graalvm-ce-java11-linux-amd64-20.3.0.tar.gz
-  tar xzf graalvm-ce-java11-linux-amd64-20.3.0.tar.gz
+if ! [ -d graalvm-ce-java11-21.0.0 ]; then
+  curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0/graalvm-ce-java11-linux-amd64-21.0.0.tar.gz
+  tar xzf graalvm-ce-java11-linux-amd64-21.0.0.tar.gz
 fi"}}
                        {:run {:name "Build binary",
                               :command "# script/uberjar\nscript/compile\n",
@@ -58,14 +58,14 @@ fi"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
-                                             "~/graalvm-ce-java11-20.3.0"],
+                                             "~/graalvm-ce-java11-21.0.0"],
                                      :key "linux-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}
                        {:store_artifacts {:path "/tmp/release",
                                           :destination "release"}}]))
 
 (def mac
   (ordered-map :macos {:xcode "12.0.0"},
-               :environment (ordered-map :GRAALVM_HOME "/Users/distiller/graalvm-ce-java11-20.3.0/Contents/Home",
+               :environment (ordered-map :GRAALVM_HOME "/Users/distiller/graalvm-ce-java11-21.0.0/Contents/Home",
                                          :BABASHKA_PLATFORM "macos",
                                          :BABASHKA_TEST_ENV "native",
                                          :BABASHKA_XMX "-J-Xmx7g"
@@ -83,9 +83,9 @@ fi"}}
                               :command "
 cd ~
 ls -la
-if ! [ -d graalvm-ce-java11-20.3.0 ]; then
-  curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.3.0/graalvm-ce-java11-darwin-amd64-20.3.0.tar.gz
-  tar xzf graalvm-ce-java11-darwin-amd64-20.3.0.tar.gz
+if ! [ -d graalvm-ce-java11-21.0.0 ]; then
+  curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0/graalvm-ce-java11-darwin-amd64-21.0.0.tar.gz
+  tar xzf graalvm-ce-java11-darwin-amd64-21.0.0.tar.gz
 fi"}}
                        {:run {:name "Build binary",
                               :command "# script/uberjar\nscript/compile\n",
@@ -97,7 +97,7 @@ fi"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
-                                             "~/graalvm-ce-java11-20.3.0"],
+                                             "~/graalvm-ce-java11-21.0.0"],
                                      :key "mac-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}
                        {:store_artifacts {:path "/tmp/release",
                                           :destination "release"}}]))
