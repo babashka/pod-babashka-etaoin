@@ -5,9 +5,7 @@
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
-            [etaoin.api :as eta]
-            [etaoin.keys :as k]
-            [clojure.string :as str])
+            [etaoin.api :as eta])
   (:import [java.io PushbackInputStream])
   (:gen-class))
 
@@ -36,7 +34,7 @@
 (def browsers (atom {}))
 
 (defn create-driver [& args]
-  (let [browser (apply eta/create-driver args)
+  (let [browser (apply #'eta/-create-driver args)
         browser-id (next-browser-id)]
     (swap! browsers assoc browser-id browser)
     browser-id))
@@ -52,7 +50,7 @@
 
 (def firefox (partial boot-driver :firefox))
 (def edge    (partial boot-driver :edge))
-(def chrome  (partial boot-driver  :chrome))
+(def chrome  (partial boot-driver :chrome))
 (def phantom (partial boot-driver :phantom))
 (def safari  (partial boot-driver :safari))
 
@@ -93,9 +91,7 @@
 (def-etaoin refresh)
 (def-etaoin quit)
 (def-etaoin stop-driver)
-(def-etaoin connect-driver)
 (def-etaoin disconnect-driver)
-(def-etaoin run-driver)
 (def-etaoin screenshot-element)
 (def-etaoin screenshot)
 (def-etaoin submit)
@@ -114,8 +110,7 @@
 (def syms '[boot-driver chrome firefox edge phantom safari
             chrome-headless firefox-headless
             quit stop-driver
-            connect-driver disconnect-driver
-            create-driver run-driver
+            disconnect-driver
             go
             wait-visible wait-running wait-has-class
             wait-has-text wait-has-alert wait-exists

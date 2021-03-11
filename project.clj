@@ -9,8 +9,8 @@
             :url "http://opensource.org/licenses/eclipse-1.0.php"}
   :source-paths ["src"]
   :resource-paths ["resources"]
-  :dependencies [[org.clojure/clojure "1.10.2-alpha1"]
-                 [borkdude/etaoin-graal "0.3.7-alpha.1"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
+                 [borkdude/etaoin-graal "0.4.2-deb92aaa21c59c52521f42c0177bbce9ac10a0e2"]
                  [nrepl/bencode "1.1.0"]]
   :profiles {:uberjar {:global-vars {*assert* false}
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"

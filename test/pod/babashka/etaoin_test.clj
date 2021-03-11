@@ -1,6 +1,6 @@
 (ns pod.babashka.etaoin-test
-  (:require [clojure.test :refer [deftest is]]
-            [babashka.pods :as pods]))
+  (:require [babashka.pods :as pods]
+            [clojure.test :refer [deftest is]]))
 
 (if(= "native" (System/getenv "POD_TEST_ENV"))
   (do (pods/load-pod "./pod-babashka-etaoin")
