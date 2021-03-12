@@ -2,7 +2,7 @@
   (:require [clojure.test :refer [deftest is]]
             [babashka.pods :as pods]))
 
-(if(= "native" (System/getenv "POD_TEST_ENV"))
+(if (= "native" (System/getenv "POD_TEST_ENV"))
   (do (pods/load-pod "./pod-babashka-etaoin")
       (println "Testing native version"))
   (do (pods/load-pod ["lein" "run" "-m" "pod.babashka.etaoin"])
@@ -22,6 +22,11 @@
     (eta/fill driver {:tag :input :name :search} k/enter)
     (eta/wait-visible driver {:class :mw-search-results})
 
+    (is (= "Main Page"
+           (eta/get-element-text driver {:href "/wiki/Main_Page"})))
+    (is (= "https://en.wikipedia.org/wiki/Main_Page"
+           (eta/get-element-attr driver {:href "/wiki/Main_Page"} :href)))
+
     ;; I'm sure the first link is what I was looking for
     (eta/click driver [{:class :mw-search-results} {:class :mw-search-result-heading} {:tag :a}])
     (eta/wait-visible driver {:id :firstHeading})
@@ -40,6 +45,3 @@
     (is (= "Clojure - Wikipedia" (eta/get-title driver)))
 
     (eta/quit driver)))
-
-
-

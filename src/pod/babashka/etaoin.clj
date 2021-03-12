@@ -110,6 +110,8 @@
 (def-etaoin fill-el)
 (def-etaoin click)
 (def-etaoin click-visible)
+(def-etaoin get-element-attr true)
+(def-etaoin get-element-text true)
 
 (def syms '[boot-driver chrome firefox edge phantom safari
             chrome-headless firefox-headless
@@ -125,7 +127,8 @@
             submit upload-file
             clear clear-el
             fill-human fill-human-el fill-multi fill fill-active fill-el
-            click click-visible])
+            click click-visible
+            get-element-attr get-element-text])
 
 (def lookup
   (zipmap (map (fn [sym]
