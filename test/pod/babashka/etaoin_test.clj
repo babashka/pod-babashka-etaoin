@@ -17,15 +17,15 @@
     (eta/go driver "https://en.wikipedia.org/")
     (eta/wait-visible driver [{:id :simpleSearch} {:tag :input :name :search}])
 
+    (is (= "Main Page"
+           (eta/get-element-text driver {:href "/wiki/Main_Page"})))
+    (is (= "/wiki/Main_Page"
+           (eta/get-element-attr driver {:href "/wiki/Main_Page"} :href)))
+
     ;; search for something
     (eta/fill driver {:tag :input :name :search} "Clojure programming language")
     (eta/fill driver {:tag :input :name :search} k/enter)
     (eta/wait-visible driver {:class :mw-search-results})
-
-    (is (= "Main Page"
-           (eta/get-element-text driver {:href "/wiki/Main_Page"})))
-    (is (= "https://en.wikipedia.org/wiki/Main_Page"
-           (eta/get-element-attr driver {:href "/wiki/Main_Page"} :href)))
 
     ;; I'm sure the first link is what I was looking for
     (eta/click driver [{:class :mw-search-results} {:class :mw-search-result-heading} {:tag :a}])
