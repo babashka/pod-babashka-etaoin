@@ -2,7 +2,7 @@
   (:require [babashka.pods :as pods]
             [clojure.test :refer [deftest is]]))
 
-(if(= "native" (System/getenv "POD_TEST_ENV"))
+(if (= "native" (System/getenv "POD_TEST_ENV"))
   (do (pods/load-pod "./pod-babashka-etaoin")
       (println "Testing native version"))
   (do (pods/load-pod ["lein" "run" "-m" "pod.babashka.etaoin"])
@@ -16,6 +16,11 @@
     ;; let's perform a quick Wiki session
     (eta/go driver "https://en.wikipedia.org/")
     (eta/wait-visible driver [{:id :simpleSearch} {:tag :input :name :search}])
+
+    (is (= "Main Page"
+           (eta/get-element-text driver {:href "/wiki/Main_Page"})))
+    (is (= "/wiki/Main_Page"
+           (eta/get-element-attr driver {:href "/wiki/Main_Page"} :href)))
 
     ;; search for something
     (eta/fill driver {:tag :input :name :search} "Clojure programming language")
@@ -40,6 +45,3 @@
     (is (= "Clojure - Wikipedia" (eta/get-title driver)))
 
     (eta/quit driver)))
-
-
-
