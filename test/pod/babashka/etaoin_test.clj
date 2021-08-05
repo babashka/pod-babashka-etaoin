@@ -54,6 +54,9 @@
     (is (= true
            (not (eta/visible? driver {:css "marquee.hopefully-not-present"}))))
 
+    (is (= [1, 2]
+           (eta/js-execute driver "return [1, 2]")))
+
     (is (= driver
            (eta/wait-absent driver :should-not-be-found)))
     (is (= driver

@@ -110,6 +110,7 @@
 (def-etaoin fill-el)
 (def-etaoin click)
 (def-etaoin click-visible)
+(def-etaoin js-execute true)
 (def-etaoin get-element-attr true)
 (def-etaoin get-element-text true)
 
@@ -130,6 +131,7 @@
             clear clear-el
             fill-human fill-human-el fill-multi fill fill-active fill-el
             click click-visible
+            js-execute
             get-element-attr get-element-text])
 
 (def lookup
