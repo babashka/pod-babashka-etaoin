@@ -88,6 +88,8 @@
 (def-etaoin get-url true)
 (def-etaoin get-title true)
 (def-etaoin has-text? true)
+(def-etaoin exists? true)
+(def-etaoin visible? true)
 (def-etaoin back)
 (def-etaoin forward)
 (def-etaoin refresh)
@@ -120,6 +122,8 @@
             wait-visible wait-running wait-has-class
             wait-has-text wait-has-alert wait-exists
             get-url get-title has-text?
+            exists?
+            visible?
             back forward refresh
             screenshot-element screenshot
             submit upload-file
