@@ -78,6 +78,8 @@
 
 (def-etaoin go)
 (def-etaoin wait-exists)
+(def-etaoin wait-absent)
+(def-etaoin wait-invisible)
 (def-etaoin wait-visible)
 (def-etaoin wait-running)
 (def-etaoin wait-has-class)
@@ -114,6 +116,7 @@
             quit stop-driver
             disconnect-driver
             go
+            wait-absent wait-invisible
             wait-visible wait-running wait-has-class
             wait-has-text wait-has-alert wait-exists
             get-url get-title has-text?

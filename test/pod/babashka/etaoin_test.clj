@@ -44,4 +44,9 @@
     (eta/refresh driver)
     (is (= "Clojure - Wikipedia" (eta/get-title driver)))
 
+    (is (= driver
+           (eta/wait-absent driver :should-not-be-found)))
+    (is (= driver
+           (eta/wait-invisible driver :should-not-be-found)))
+
     (eta/quit driver)))
