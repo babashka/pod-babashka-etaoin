@@ -157,6 +157,15 @@
 
 (debug describe-map)
 
+; The ex-data may have [:driver :process] (a java.lang.Process)
+; or [:predicate] (a clojure.lang.AFunction), either of which render as #object
+; which will break when the other end tries to read it.
+; In case there is anything else just fix the representation of anything without
+; its own print-method.
+(defmethod print-method Object [v ^java.io.Writer w]
+  (.write w (pr-str {:type (type v)
+                     :str  (str v)})))
+
 (defn -main [& _args]
   (loop []
     (let [message (try (read)
@@ -189,9 +198,16 @@
                           (catch Throwable e
                             (debug e)
                             (let [reply {"ex-message" (ex-message e)
-                                         "ex-data" (pr-str
-                                                    (assoc (ex-data e)
-                                                           :type (class e)))
+                                         "ex-data" (-> e
+                                                       (ex-data)
+                                                       ; Rename :type to preserve it
+                                                       ; so we can use :type for class.
+                                                       (as-> data
+                                                             (assoc data
+                                                                    :etaoin/type
+                                                                    (:type data)))
+                                                       (assoc :type (class e))
+                                                       pr-str)
                                          "id" id
                                          "status" ["done" "error"]}]
                               (write reply))))
