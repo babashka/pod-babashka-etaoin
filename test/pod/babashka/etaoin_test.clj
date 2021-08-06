@@ -44,4 +44,22 @@
     (eta/refresh driver)
     (is (= "Clojure - Wikipedia" (eta/get-title driver)))
 
+    (is (= true
+           (eta/exists? driver {:tag "html"})))
+    (is (= true
+           (not (eta/exists? driver {:css "marquee.hopefully-not-present"}))))
+
+    (is (= true
+           (eta/visible? driver {:tag "html"})))
+    (is (= true
+           (not (eta/visible? driver {:css "marquee.hopefully-not-present"}))))
+
+    (is (= [1, 2]
+           (eta/js-execute driver "return [1, 2]")))
+
+    (is (= driver
+           (eta/wait-absent driver :should-not-be-found)))
+    (is (= driver
+           (eta/wait-invisible driver :should-not-be-found)))
+
     (eta/quit driver)))

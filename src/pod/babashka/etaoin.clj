@@ -78,6 +78,8 @@
 
 (def-etaoin go)
 (def-etaoin wait-exists)
+(def-etaoin wait-absent)
+(def-etaoin wait-invisible)
 (def-etaoin wait-visible)
 (def-etaoin wait-running)
 (def-etaoin wait-has-class)
@@ -86,6 +88,8 @@
 (def-etaoin get-url true)
 (def-etaoin get-title true)
 (def-etaoin has-text? true)
+(def-etaoin exists? true)
+(def-etaoin visible? true)
 (def-etaoin back)
 (def-etaoin forward)
 (def-etaoin refresh)
@@ -106,6 +110,7 @@
 (def-etaoin fill-el)
 (def-etaoin click)
 (def-etaoin click-visible)
+(def-etaoin js-execute true)
 (def-etaoin get-element-attr true)
 (def-etaoin get-element-text true)
 
@@ -114,15 +119,19 @@
             quit stop-driver
             disconnect-driver
             go
+            wait-absent wait-invisible
             wait-visible wait-running wait-has-class
             wait-has-text wait-has-alert wait-exists
             get-url get-title has-text?
+            exists?
+            visible?
             back forward refresh
             screenshot-element screenshot
             submit upload-file
             clear clear-el
             fill-human fill-human-el fill-multi fill fill-active fill-el
             click click-visible
+            js-execute
             get-element-attr get-element-text])
 
 (def lookup
