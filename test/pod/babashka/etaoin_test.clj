@@ -62,4 +62,15 @@
     (is (= driver
            (eta/wait-invisible driver :should-not-be-found)))
 
+    (is (= {:type 'clojure.lang.ExceptionInfo
+            :etaoin/type :etaoin/timeout}
+           (-> (try
+                 (eta/wait-visible driver :should-not-be-found {:timeout 1})
+                 nil
+                 (catch Throwable x
+                   x))
+               (ex-data)
+               (select-keys [:etaoin/type :type])))
+        "etaoin type preserved in ex-data")
+
     (eta/quit driver)))

@@ -198,9 +198,16 @@
                           (catch Throwable e
                             (debug e)
                             (let [reply {"ex-message" (ex-message e)
-                                         "ex-data" (pr-str
-                                                    (assoc (ex-data e)
-                                                           :type (class e)))
+                                         "ex-data" (-> e
+                                                       (ex-data)
+                                                       ; Rename :type to preserve it
+                                                       ; so we can use :type for class.
+                                                       (as-> data
+                                                             (assoc data
+                                                                    :etaoin/type
+                                                                    (:type data)))
+                                                       (assoc :type (class e))
+                                                       pr-str)
                                          "id" id
                                          "status" ["done" "error"]}]
                               (write reply))))
