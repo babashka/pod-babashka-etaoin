@@ -1,4 +1,4 @@
-{:deps {etaoin {:mvn/version "0.3.6"}
+{:deps {borkdude/etaoin-graal {:mvn/version "0.4.2-deb92aaa21c59c52521f42c0177bbce9ac10a0e2"}
         nrepl/bencode {:mvn/version "1.1.0"}}
  :aliases
  {:test
@@ -10,4 +10,13 @@
     {:git/url "https://github.com/babashka/babashka.pods"
      :sha "feb48af75f60a4e31bfb434eb7321fd93c4a31cb"}}
    :extra-paths ["test"]
-   :main-opts ["-m" "cognitect.test-runner"]}}}
+   :main-opts ["-m" "cognitect.test-runner"]}
+  :uberjar
+  {:replace-deps
+              {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+   :exec-fn hf.depstar/uberjar
+   :exec-args {:jar pod-babashka-etaoin.jar
+               :main-class pod.babashka.etaoin
+               :aot true
+               :jvm-opts ["-Dclojure.compiler.direct-linking=true"
+                          "-Dclojure.spec.skip-macros=true"]}}}}
