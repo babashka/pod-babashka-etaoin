@@ -1,0 +1,41 @@
+{:tasks
+ {:requires ([babashka.fs :as fs]
+             [clojure.string :as str])
+  :init     (def windows? (str/starts-with? (System/getProperty "os.name")
+                            "Windows"))
+  uberjar {:doc "Builds uberjar"
+           :task (when (seq (fs/modified-since "pod-babashka-etaoin.jar" "src"))
+                   (clojure "-X:uberjar"))}
+  graalvm {:doc "Checks GRAALVM_HOME env var"
+           :task
+                (let [env (System/getenv "GRAALVM_HOME")]
+                  (assert env "Set GRAALVM_HOME")
+                  env)}
+  native-image {:doc "Builds native image"
+                :depends [graalvm uberjar]
+                :task (do
+                        (shell (str (fs/file graalvm
+                                      "bin"
+                                      (if windows?
+                                        "gu.cmd"
+                                        "gu")))
+                          "install" "native-image")
+                        (shell (str (fs/file graalvm
+                                      "bin"
+                                      (if windows?
+                                        "native-image.cmd"
+                                        "native-image")))
+                          "-cp" "pod-babashka-etaoin.jar"
+                          "-H:Name=pod-babashka-etaoin"
+                          "-H:+ReportExceptionStackTraces"
+                          "--initialize-at-build-time"
+                          "-H:EnableURLProtocols=jar"
+                          "--report-unsupported-elements-at-runtime"
+                          "-H:EnableURLProtocols=http,https,jar"
+                          "--enable-all-security-services"
+                          "-H:ReflectionConfigurationFiles=reflection.json"
+                          "--verbose"
+                          "--no-fallback"
+                          "--no-server"
+                          "-J-Xmx3g"
+                          "pod.babashka.etaoin"))}}}
