@@ -10,10 +10,8 @@ but some may be missing, for which I will happily accept PRs.
 
 ## Install
 
-The following installation methods are available:
-
+- Use from the babashka registry as `(pods/load-pod 'org.babashka/etaoin "0.0.3")`
 - Download a binary from Github releases
-- With [brew](https://brew.sh/): `brew install borkdude/brew/pod-babashka-etaoin`
 
 ## Compatibility
 
@@ -27,7 +25,8 @@ The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`. The
 
 ``` clojure
 (require '[babashka.pods :as pods])
-(pods/load-pod "pod-babashka-etaoin")
+(pods/load-pod 'org.babashka/etaoin "0.0.3")
+;; or for loading local binary: (pods/load-pod "./pod-babashka-etaoin")
 (require '[pod.babashka.etaoin :as eta])
 (def driver (eta/firefox))
 (eta/go driver "https://clojure.org")
