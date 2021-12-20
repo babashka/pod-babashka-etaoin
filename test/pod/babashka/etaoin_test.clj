@@ -38,6 +38,9 @@
 
     (is (eta/has-text? driver "Clojure"))
 
+    ;; wait for 1 second
+    (eta/wait driver 1)
+
     ;; navigate on history
     (eta/back driver)
     (eta/forward driver)
