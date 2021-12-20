@@ -77,6 +77,7 @@
             browser-id#))))))
 
 (def-etaoin go)
+(def-etaoin wait)
 (def-etaoin wait-exists)
 (def-etaoin wait-absent)
 (def-etaoin wait-invisible)
@@ -118,7 +119,7 @@
             chrome-headless firefox-headless
             quit stop-driver
             disconnect-driver
-            go
+            go wait
             wait-absent wait-invisible
             wait-visible wait-running wait-has-class
             wait-has-text wait-has-alert wait-exists
