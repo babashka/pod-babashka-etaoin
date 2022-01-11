@@ -2,3 +2,6 @@
 /pod-babashka-etaoin
 /.cpcache
 .lein-repl-history
+/.clj-kondo/*
+!/.clj-kondo/config.edn
+/.lsp
