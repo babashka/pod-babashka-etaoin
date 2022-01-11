@@ -19,4 +19,8 @@
                :main-class pod.babashka.etaoin
                :aot true
                :jvm-opts ["-Dclojure.compiler.direct-linking=true"
-                          "-Dclojure.spec.skip-macros=true"]}}}}
+                          "-Dclojure.spec.skip-macros=true"]}}
+
+ :build ;; added by neil
+ {:deps {io.github.clojure/tools.build {:git/tag "v0.7.5" :git/sha "34727f7"}}
+  :ns-default build}}}

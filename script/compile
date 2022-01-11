@@ -10,18 +10,16 @@ fi
 "$GRAALVM_HOME/bin/gu" install native-image || true
 export PATH=$GRAALVM_HOME/bin:$PATH
 
-POD_LEIN_PROFILES="+uberjar"
 POD_NAME="pod-babashka-etaoin"
 POD_REFLECTION_CONFIG="reflection.json"
 POD_VERSION="$(cat resources/POD_VERSION)"
 
 JAR="target/pod-babashka-etaoin-$POD_VERSION-standalone.jar"
 
-echo "$POD_LEIN_PROFILES"
 echo "$POD_REFLECTION_CONFIG"
 
 java -version
-lein with-profiles "$POD_LEIN_PROFILES" "do" clean, uberjar
+clojure -T:build uber
 
 $GRAALVM_HOME/bin/native-image \
     -jar "$JAR" \
