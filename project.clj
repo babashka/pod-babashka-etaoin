@@ -15,7 +15,7 @@
   :profiles {:uberjar {:global-vars {*assert* false}
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"
                                   "-Dclojure.spec.skip-macros=true"]
-                       :aot :all
+                       :aot [pod.babashka.etaoin]
                        :main pod.babashka.etaoin}}
   :deploy-repositories [["clojars" {:url "https://clojars.org/repo"
                                     :username :env/clojars_user
