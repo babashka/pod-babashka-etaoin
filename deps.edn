@@ -1,4 +1,4 @@
-{:deps {borkdude/etaoin-graal {:mvn/version "0.4.2-deb92aaa21c59c52521f42c0177bbce9ac10a0e2"}
+{:deps {borkdude/etaoin-graal {:mvn/version "0.4.6-ae21d07"}
         nrepl/bencode {:mvn/version "1.1.0"}}
  :aliases
  {:test
