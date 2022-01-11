@@ -5,7 +5,8 @@
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.walk :as walk]
-            [etaoin.api :as eta])
+            [etaoin.api :as eta]
+            [etaoin.query])
   (:import [java.io PushbackInputStream])
   (:gen-class))
 
@@ -68,10 +69,11 @@
 
 (defmacro def-etaoin
   ([name] `(def-etaoin ~name false))
-  ([name return?]
+  ([name ?return] `(def-etaoin ~name ~?return "etaoin.api"))
+  ([name return? ns-str]
    `(defn ~name [browser-id# ~'& args#]
       (let [browser# (get @browsers browser-id#)]
-        (let [ret# (apply ~(symbol "etaoin.api" (str name)) browser# args#)]
+        (let [ret# (apply ~(symbol ns-str (str name)) browser# args#)]
           (if ~return?
             ret#
             browser-id#))))))
@@ -115,6 +117,8 @@
 (def-etaoin get-element-attr true)
 (def-etaoin get-element-text true)
 
+(def-etaoin expand true "etaoin.query")
+
 (def syms '[boot-driver chrome firefox edge phantom safari
             chrome-headless firefox-headless
             quit stop-driver
@@ -135,12 +139,19 @@
             js-execute
             get-element-attr get-element-text])
 
+(def query-syms '[expand])
+
 (def lookup
-  (zipmap (map (fn [sym]
-                 (symbol "pod.babashka.etaoin"
-                         (name sym)))
-               syms)
-          (map resolve syms)))
+  (merge (zipmap (map (fn [sym]
+                       (symbol "pod.babashka.etaoin"
+                               (name sym)))
+                     syms)
+                 (map resolve syms))
+         (zipmap (map (fn [sym]
+                        (symbol "pod.babashka.etaoin.query"
+                                (name sym)))
+                      query-syms)
+                 (map resolve query-syms))))
 
 (def describe-map
   (walk/postwalk
@@ -150,6 +161,10 @@
    `{:format :edn
      :namespaces [{:name pod.babashka.etaoin.keys
                    :vars [{:name enter :code "(def enter \\uE007)"}]}
+                  {:name pod.babashka.etaoin.query
+                   :vars ~(mapv (fn [sym]
+                                  {:name sym})
+                                query-syms)}
                   {:name pod.babashka.etaoin
                    :vars ~(mapv (fn [sym]
                                   {:name sym})

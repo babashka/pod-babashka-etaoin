@@ -9,7 +9,8 @@
       (println "Testing JVM version")))
 
 (require '[pod.babashka.etaoin :as eta]
-         '[pod.babashka.etaoin.keys :as k])
+         '[pod.babashka.etaoin.keys :as k]
+         '[pod.babashka.etaoin.query :as q])
 
 (deftest etaoin-test
   (let [driver (eta/firefox-headless)]
@@ -75,5 +76,6 @@
                (ex-data)
                (select-keys [:etaoin/type :type])))
         "etaoin type preserved in ex-data")
-
+    (is (= ["xpath" ".//*[@class=\"mw-search-results\"]"]
+           (q/expand driver {:class :mw-search-results})))
     (eta/quit driver)))
