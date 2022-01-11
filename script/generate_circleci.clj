@@ -13,9 +13,9 @@
                        {:restore_cache {:keys ["jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"]}}
                        {:run {:name "Install Clojure",
                               :command "
-wget https://download.clojure.org/install/linux-install-1.10.1.447.sh
-chmod +x linux-install-1.10.1.447.sh
-sudo ./linux-install-1.10.1.447.sh"}}
+wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
+chmod +x linux-install-1.10.3.1058.sh
+sudo ./linux-install-1.10.3.1058.sh"}}
                        {:run {:name "Run tests",
                               :command "script/test\n"}}
                        {:save_cache {:paths ["~/.m2"],
@@ -36,9 +36,9 @@ sudo ./linux-install-1.10.1.447.sh"}}
                        {:restore_cache {:keys ["linux-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"]}}
                        {:run {:name "Install Clojure",
                               :command "
-wget https://download.clojure.org/install/linux-install-1.10.1.447.sh
-chmod +x linux-install-1.10.1.447.sh
-sudo ./linux-install-1.10.1.447.sh"}}
+wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
+chmod +x linux-install-1.10.3.1058.sh
+sudo ./linux-install-1.10.3.1058.sh"}}
                        {:run {:name "Install lsof",
                               :command "sudo apt-get install lsof\n"}}
                        {:run {:name "Install native dev tools",
