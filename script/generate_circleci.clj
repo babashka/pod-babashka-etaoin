@@ -28,6 +28,7 @@
 wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
 chmod +x linux-install-1.10.3.1058.sh
 sudo ./linux-install-1.10.3.1058.sh"}}
+                       install-babashka
                        run-tests
                        {:save_cache {:paths ["~/.m2"],
                                      :key "jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}]))
