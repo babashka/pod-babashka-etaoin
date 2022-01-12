@@ -10,7 +10,7 @@ but some may be missing, for which I will happily accept PRs.
 
 ## Install
 
-- Use from the babashka registry as `(pods/load-pod 'org.babashka/etaoin "0.0.3")`
+- Use from the babashka registry as `(pods/load-pod 'org.babashka/etaoin "0.1.0")`
 - Download a binary from Github releases
 
 ## Compatibility
@@ -18,10 +18,13 @@ but some may be missing, for which I will happily accept PRs.
 This pod requires babashka v0.0.96 or later. Additionally you might have to
 install `geckodriver` for Firefox, or `chromedriver` for Chrome.
 
-## Run
+## Namespaces
 
-The `etaoin.api` namespace is exposed as `pod.babashka.etaoin`. The
-`etaoin.keys` namespace is exposed as `pod.babashka.etaoin.keys`.
+- `etaoin.api` is exposed as `pod.babashka.etaoin`
+- `etaoin.keys` is exposed as `pod.babashka.etaoin.keys`
+- `etaoin.query` is exposed as `pod.babashka.etaoin.query`
+
+## Run
 
 ``` clojure
 (require '[babashka.pods :as pods])
@@ -47,14 +50,14 @@ true
 
 ### Build
 
-Run `script/compile`
+Run `bb native-image`
 
 ### Test
 
-Run `script/test`.
+Run `bb test`.
 
 ## License
 
-Copyright © 2020 Michiel Borkent
+Copyright © 2020 - 2022 Michiel Borkent
 
 Distributed under the EPL License. See LICENSE.
