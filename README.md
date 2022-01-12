@@ -28,7 +28,7 @@ install `geckodriver` for Firefox, or `chromedriver` for Chrome.
 
 ``` clojure
 (require '[babashka.pods :as pods])
-(pods/load-pod 'org.babashka/etaoin "0.0.3")
+(pods/load-pod 'org.babashka/etaoin "0.1.0")
 ;; or for loading local binary: (pods/load-pod "./pod-babashka-etaoin")
 (require '[pod.babashka.etaoin :as eta])
 (def driver (eta/firefox))
