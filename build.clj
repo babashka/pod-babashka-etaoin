@@ -2,10 +2,17 @@
   (:require [clojure.string :as str]
             [clojure.tools.build.api :as b]))
 
+(def windows? (str/starts-with? (System/getProperty "os.name") "Win"))
+
+(println "Windows:" windows?)
+
 (def lib 'babashka/pod-babashka-etaoin)
 (def version (str/trim (slurp "resources/POD_VERSION")))
 (def class-dir "target/classes")
-(def basis (b/create-basis {:project "deps.edn"}))
+
+(def basis (b/create-basis (cond-> {:project "deps.edn"}
+                             windows? (assoc :aliases [:windows]))))
+
 (def uber-file (format "target/%s-%s-standalone.jar" (name lib) version))
 
 (defn clean [_]

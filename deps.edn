@@ -11,6 +11,7 @@
      :sha "feb48af75f60a4e31bfb434eb7321fd93c4a31cb"}}
    :extra-paths ["test"]
    :main-opts ["-m" "cognitect.test-runner"]}
+  :windows {:extra-deps {javax.xml.bind/jaxb-api {:mvn/version "2.3.1"}}}
  :build ;; added by neil
  {:deps {io.github.clojure/tools.build {:git/tag "v0.7.5" :git/sha "34727f7"}}
   :ns-default build}}}
