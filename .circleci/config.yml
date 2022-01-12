@@ -52,7 +52,10 @@ jobs:
           sudo ./linux-install-1.10.3.1058.sh
     - run:
         name: Install babashka
-        command: ['curl -sLO https://github.com/babashka/babashka/blob/master/install', chmod +x install, sudo ./install]
+        command: |-
+          curl -sLO https://github.com/babashka/babashka/blob/master/install
+          chmod +x install
+          sudo ./install
     - run:
         name: Install lsof
         command: |
@@ -117,7 +120,10 @@ jobs:
           fi
     - run:
         name: Install babashka
-        command: ['curl -sLO https://github.com/babashka/babashka/blob/master/install', chmod +x install, sudo ./install]
+        command: |-
+          curl -sLO https://github.com/babashka/babashka/blob/master/install
+          chmod +x install
+          sudo ./install
     - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
     - run:
         name: Release

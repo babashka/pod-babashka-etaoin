@@ -1,13 +1,15 @@
 #!/usr/bin/env bb
 
 (ns generate-circleci
-  (:require [flatland.ordered.map :refer [ordered-map]]))
+  (:require [clojure.string :as str]
+            [flatland.ordered.map :refer [ordered-map]]
+            ))
 
 (def install-babashka
   {:run {:name "Install babashka"
-         :command ["curl -sLO https://github.com/babashka/babashka/blob/master/install"
-                   "chmod +x install"
-                   "sudo ./install"]}})
+         :command (str/join "\n" ["curl -sLO https://github.com/babashka/babashka/blob/master/install"
+                                  "chmod +x install"
+                                  "sudo ./install"])}})
 
 (def jvm
   (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
