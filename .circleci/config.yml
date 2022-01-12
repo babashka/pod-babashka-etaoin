@@ -51,6 +51,9 @@ jobs:
           chmod +x linux-install-1.10.3.1058.sh
           sudo ./linux-install-1.10.3.1058.sh
     - run:
+        name: Install babashka
+        command: ['curl -sLO https://github.com/babashka/babashka/blob/master/install', chmod +x install, sudo ./install]
+    - run:
         name: Install lsof
         command: |
           sudo apt-get install lsof
@@ -112,6 +115,9 @@ jobs:
             curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-darwin-amd64-21.3.0.tar.gz
             tar xzf graalvm-ce-java11-darwin-amd64-21.3.0.tar.gz
           fi
+    - run:
+        name: Install babashka
+        command: ['curl -sLO https://github.com/babashka/babashka/blob/master/install', chmod +x install, sudo ./install]
     - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
     - run:
         name: Release

@@ -50,8 +50,6 @@ build_script:
     powershell -Command "if (Test-Path('bb.exe')) { return } else { Expand-Archive bb.zip . }"
 
 - cmd: >-
-    call script/compile.bat
-
     set /P VERSION=< resources\POD_VERSION
 
     bb run native-image

@@ -3,6 +3,12 @@
 (ns generate-circleci
   (:require [flatland.ordered.map :refer [ordered-map]]))
 
+(def install-babashka
+  {:run {:name "Install babashka"
+         :command ["curl -sLO https://github.com/babashka/babashka/blob/master/install"
+                   "chmod +x install"
+                   "sudo ./install"]}})
+
 (def jvm
   (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
                :working_directory "~/repo"
@@ -39,6 +45,7 @@ sudo ./linux-install-1.10.3.1058.sh"}}
 wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
 chmod +x linux-install-1.10.3.1058.sh
 sudo ./linux-install-1.10.3.1058.sh"}}
+                       install-babashka
                        {:run {:name "Install lsof",
                               :command "sudo apt-get install lsof\n"}}
                        {:run {:name "Install native dev tools",
@@ -87,6 +94,7 @@ if ! [ -d graalvm-ce-java11-21.3.0 ]; then
   curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-darwin-amd64-21.3.0.tar.gz
   tar xzf graalvm-ce-java11-darwin-amd64-21.3.0.tar.gz
 fi"}}
+                       install-babashka
                        {:run {:name "Build binary",
                               :command "bb native-image",
                               :no_output_timeout "30m"}}
