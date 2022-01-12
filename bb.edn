@@ -6,6 +6,8 @@
 
   clean (fs/delete-tree "target")
 
+  gen-circleci (load-file "script/generate_circleci.clj")
+
   version (str/trim (slurp "resources/POD_VERSION"))
 
   uberjar-name {:depends [version]
@@ -49,5 +51,6 @@
                           "--verbose"
                           "--no-fallback"
                           "--no-server"
-                          "-J-Xmx3g"
-                          "pod.babashka.etaoin"))}}}
+                          "-J-Xmx3g"))}
+
+  test (clojure "-M:test")}}
