@@ -22,10 +22,7 @@ jobs:
           wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
           chmod +x linux-install-1.10.3.1058.sh
           sudo ./linux-install-1.10.3.1058.sh
-    - run:
-        name: Run tests
-        command: |
-          script/test
+    - run: {name: Run tests, command: bb test}
     - save_cache:
         paths: [~/.m2]
         key: jvm-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
@@ -75,10 +72,7 @@ jobs:
             tar xzf graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
           fi
     - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
-    - run:
-        name: Run tests
-        command: |
-          script/test
+    - run: {name: Run tests, command: bb test}
     - run:
         name: Release
         command: |

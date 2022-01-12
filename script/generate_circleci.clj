@@ -11,6 +11,10 @@
                                   "chmod +x install"
                                   "sudo ./install"])}})
 
+(def run-tests
+  {:run {:name "Run tests"
+         :command (str/join "\n" ["bb test"])}})
+
 (def jvm
   (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
                :working_directory "~/repo"
@@ -24,8 +28,7 @@
 wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
 chmod +x linux-install-1.10.3.1058.sh
 sudo ./linux-install-1.10.3.1058.sh"}}
-                       {:run {:name "Run tests",
-                              :command "script/test\n"}}
+                       run-tests
                        {:save_cache {:paths ["~/.m2"],
                                      :key "jvm-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}]))
 
@@ -62,8 +65,7 @@ fi"}}
                        {:run {:name "Build binary",
                               :command "bb native-image",
                               :no_output_timeout "30m"}}
-                       {:run {:name "Run tests",
-                              :command "script/test\n"}}
+                       run-tests
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
