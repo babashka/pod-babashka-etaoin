@@ -53,7 +53,7 @@ jobs:
     - run:
         name: Install babashka
         command: |-
-          curl -sLO https://github.com/babashka/babashka/blob/master/install
+          curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
           chmod +x install
           sudo ./install
     - run:
@@ -121,7 +121,7 @@ jobs:
     - run:
         name: Install babashka
         command: |-
-          curl -sLO https://github.com/babashka/babashka/blob/master/install
+          curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
           chmod +x install
           sudo ./install
     - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}

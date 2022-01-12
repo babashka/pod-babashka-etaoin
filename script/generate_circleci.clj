@@ -7,7 +7,7 @@
 
 (def install-babashka
   {:run {:name "Install babashka"
-         :command (str/join "\n" ["curl -sLO https://github.com/babashka/babashka/blob/master/install"
+         :command (str/join "\n" ["curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install"
                                   "chmod +x install"
                                   "sudo ./install"])}})
 
