@@ -52,6 +52,12 @@ build_script:
 - cmd: >-
     call script/compile.bat
 
+    set /P VERSION=< resources\POD_VERSION
+
+    bb run native-image
+
+    jar -cMf pod-babashka-etaoin-%VERSION%-windows-amd64.zip pod-babashka-etaoin.exe
+
 artifacts:
 - path: pod-babashka-etaoin-*-windows-amd64.zip
   name: pod-babashka-etaoin

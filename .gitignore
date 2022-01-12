@@ -5,3 +5,5 @@
 /.clj-kondo/*
 !/.clj-kondo/config.edn
 /.lsp
+/pod.babashka.etaoin
+/pod.babashka.etaoin.build_artifacts.txt

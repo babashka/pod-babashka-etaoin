@@ -51,7 +51,7 @@ if ! [ -d graalvm-ce-java11-21.3.0 ]; then
   tar xzf graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
 fi"}}
                        {:run {:name "Build binary",
-                              :command "# script/uberjar\nscript/compile\n",
+                              :command "bb native-image",
                               :no_output_timeout "30m"}}
                        {:run {:name "Run tests",
                               :command "script/test\n"}}
@@ -88,7 +88,7 @@ if ! [ -d graalvm-ce-java11-21.3.0 ]; then
   tar xzf graalvm-ce-java11-darwin-amd64-21.3.0.tar.gz
 fi"}}
                        {:run {:name "Build binary",
-                              :command "# script/uberjar\nscript/compile\n",
+                              :command "bb native-image",
                               :no_output_timeout "30m"}}
                        ;; tests are skipped, until we figure out how to install
                        ;; Firefox headless on CI

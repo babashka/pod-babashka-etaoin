@@ -3,24 +3,14 @@
  :aliases
  {:test
   {:extra-deps
-   {test-runner
+   {cognitect/test-runner
     {:git/url "https://github.com/cognitect-labs/test-runner"
      :sha "cb96e80f6f3d3b307c59cbeb49bb0dcb3a2a780b"}
-    babashka.pods
+    babashka/babashka.pods
     {:git/url "https://github.com/babashka/babashka.pods"
      :sha "feb48af75f60a4e31bfb434eb7321fd93c4a31cb"}}
    :extra-paths ["test"]
    :main-opts ["-m" "cognitect.test-runner"]}
-  :uberjar
-  {:replace-deps
-              {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
-   :exec-fn hf.depstar/uberjar
-   :exec-args {:jar pod-babashka-etaoin.jar
-               :main-class pod.babashka.etaoin
-               :aot true
-               :jvm-opts ["-Dclojure.compiler.direct-linking=true"
-                          "-Dclojure.spec.skip-macros=true"]}}
-
  :build ;; added by neil
  {:deps {io.github.clojure/tools.build {:git/tag "v0.7.5" :git/sha "34727f7"}}
   :ns-default build}}}
