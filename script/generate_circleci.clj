@@ -76,7 +76,7 @@ fi"}}
                                           :destination "release"}}]))
 
 (def linux-aarch64
-  (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
+  (ordered-map :machine {:image "ubuntu-2004:202101-01"}
                :working_directory "~/repo"
                :environment (ordered-map :LEIN_ROOT "true"
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"

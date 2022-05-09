@@ -109,8 +109,8 @@ jobs:
         path: /tmp/release
         destination: release
   linux-aarch64:
-    docker:
-    - image: circleci/clojure:openjdk-11-lein-browsers
+    machine:
+      image: ubuntu-2004:202101-01
     working_directory: ~/repo
     environment:
       LEIN_ROOT: 'true'
