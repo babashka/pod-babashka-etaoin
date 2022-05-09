@@ -3,9 +3,10 @@ version: 2.1
 jobs:
   jvm:
     docker:
-    - {image: 'circleci/clojure:openjdk-11-lein-browsers'}
+    - image: circleci/clojure:openjdk-11-lein-browsers
     working_directory: ~/repo
-    environment: {LEIN_ROOT: 'true'}
+    environment:
+      LEIN_ROOT: 'true'
     steps:
     - checkout
     - run:
@@ -14,7 +15,8 @@ jobs:
           git submodule init
           git submodule update
     - restore_cache:
-        keys: ['jvm-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}']
+        keys:
+        - jvm-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - run:
         name: Install Clojure
         command: |2-
@@ -28,15 +30,24 @@ jobs:
           curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
           chmod +x install
           sudo ./install
-    - run: {name: Run tests, command: bb test}
+    - run:
+        name: Run tests
+        command: bb test
     - save_cache:
-        paths: [~/.m2]
+        paths:
+        - ~/.m2
         key: jvm-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
   linux:
     docker:
-    - {image: 'circleci/clojure:openjdk-11-lein-browsers'}
+    - image: circleci/clojure:openjdk-11-lein-browsers
     working_directory: ~/repo
-    environment: {LEIN_ROOT: 'true', GRAALVM_HOME: /home/circleci/graalvm-ce-java11-21.3.0, BABASHKA_PLATFORM: linux, BABASHKA_XMX: -J-Xmx7g, POD_TEST_ENV: native, resource_class: large}
+    environment:
+      LEIN_ROOT: 'true'
+      GRAALVM_HOME: /home/circleci/graalvm-ce-java11-21.3.0
+      BABASHKA_PLATFORM: linux
+      BABASHKA_XMX: -J-Xmx7g
+      POD_TEST_ENV: native
+      resource_class: large
     steps:
     - checkout
     - run:
@@ -45,7 +56,8 @@ jobs:
           git submodule init
           git submodule update
     - restore_cache:
-        keys: ['linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}']
+        keys:
+        - linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - run:
         name: Install Clojure
         command: |2-
@@ -77,21 +89,37 @@ jobs:
             curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
             tar xzf graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
           fi
-    - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
-    - run: {name: Run tests, command: bb test}
+    - run:
+        name: Build binary
+        command: bb native-image
+        no_output_timeout: 30m
+    - run:
+        name: Run tests
+        command: bb test
     - run:
         name: Release
         command: |
           .circleci/script/release
     - save_cache:
-        paths: [~/.m2, ~/graalvm-ce-java11-21.3.0]
+        paths:
+        - ~/.m2
+        - ~/graalvm-ce-java11-21.3.0
         key: linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
-    - store_artifacts: {path: /tmp/release, destination: release}
+    - store_artifacts:
+        path: /tmp/release
+        destination: release
   linux-aarch64:
     docker:
-    - {image: 'circleci/clojure:openjdk-11-lein-browsers'}
+    - image: circleci/clojure:openjdk-11-lein-browsers
     working_directory: ~/repo
-    environment: {LEIN_ROOT: 'true', GRAALVM_HOME: /home/circleci/graalvm-ce-java11-21.3.0, BABASHKA_PLATFORM: linux, POD_ARCH: aarch64, BABASHKA_XMX: -J-Xmx7g, POD_TEST_ENV: native, resource_class: large}
+    environment:
+      LEIN_ROOT: 'true'
+      GRAALVM_HOME: /home/circleci/graalvm-ce-java11-21.3.0
+      BABASHKA_PLATFORM: linux
+      POD_ARCH: aarch64
+      BABASHKA_XMX: -J-Xmx7g
+      POD_TEST_ENV: native
+      resource_class: large
     steps:
     - checkout
     - run:
@@ -100,7 +128,8 @@ jobs:
           git submodule init
           git submodule update
     - restore_cache:
-        keys: ['linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}']
+        keys:
+        - linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - run:
         name: Install Clojure
         command: |2-
@@ -132,19 +161,34 @@ jobs:
             curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
             tar xzf graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
           fi
-    - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
-    - run: {name: Run tests, command: bb test}
+    - run:
+        name: Build binary
+        command: bb native-image
+        no_output_timeout: 30m
+    - run:
+        name: Run tests
+        command: bb test
     - run:
         name: Release
         command: |
           .circleci/script/release
     - save_cache:
-        paths: [~/.m2, ~/graalvm-ce-java11-21.3.0]
+        paths:
+        - ~/.m2
+        - ~/graalvm-ce-java11-21.3.0
         key: linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
-    - store_artifacts: {path: /tmp/release, destination: release}
+    - store_artifacts:
+        path: /tmp/release
+        destination: release
   mac:
-    macos: {xcode: 12.0.0}
-    environment: {GRAALVM_HOME: /Users/distiller/graalvm-ce-java11-21.3.0/Contents/Home, BABASHKA_PLATFORM: macos, BABASHKA_TEST_ENV: native, BABASHKA_XMX: -J-Xmx7g, POD_TEST_ENV: native}
+    macos:
+      xcode: 12.0.0
+    environment:
+      GRAALVM_HOME: /Users/distiller/graalvm-ce-java11-21.3.0/Contents/Home
+      BABASHKA_PLATFORM: macos
+      BABASHKA_TEST_ENV: native
+      BABASHKA_XMX: -J-Xmx7g
+      POD_TEST_ENV: native
     resource_class: large
     steps:
     - checkout
@@ -154,7 +198,8 @@ jobs:
           git submodule init
           git submodule update
     - restore_cache:
-        keys: ['mac-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}']
+        keys:
+        - mac-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
     - run:
         name: Install Clojure
         command: |
@@ -179,16 +224,27 @@ jobs:
           curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
           chmod +x install
           sudo ./install
-    - run: {name: Build binary, command: bb native-image, no_output_timeout: 30m}
+    - run:
+        name: Build binary
+        command: bb native-image
+        no_output_timeout: 30m
     - run:
         name: Release
         command: |
           .circleci/script/release
     - save_cache:
-        paths: [~/.m2, ~/graalvm-ce-java11-21.3.0]
+        paths:
+        - ~/.m2
+        - ~/graalvm-ce-java11-21.3.0
         key: mac-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
-    - store_artifacts: {path: /tmp/release, destination: release}
+    - store_artifacts:
+        path: /tmp/release
+        destination: release
 workflows:
   version: 2
   ci:
-    jobs: [jvm, linux, linux-aarch64, mac]
+    jobs:
+    - jvm
+    - linux
+    - linux-aarch64
+    - mac
