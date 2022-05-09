@@ -108,6 +108,78 @@ jobs:
     - store_artifacts:
         path: /tmp/release
         destination: release
+  linux-aarch64:
+    docker:
+    - image: circleci/clojure:openjdk-11-lein-browsers
+    working_directory: ~/repo
+    environment:
+      LEIN_ROOT: 'true'
+      GRAALVM_HOME: /home/circleci/graalvm-ce-java11-21.3.0
+      BABASHKA_PLATFORM: linux
+      POD_ARCH: aarch64
+      BABASHKA_XMX: -J-Xmx7g
+      POD_TEST_ENV: native
+      resource_class: large
+    steps:
+    - checkout
+    - run:
+        name: Pull Submodules
+        command: |
+          git submodule init
+          git submodule update
+    - restore_cache:
+        keys:
+        - linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
+    - run:
+        name: Install Clojure
+        command: |2-
+
+          wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
+          chmod +x linux-install-1.10.3.1058.sh
+          sudo ./linux-install-1.10.3.1058.sh
+    - run:
+        name: Install babashka
+        command: |-
+          curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install
+          chmod +x install
+          sudo ./install
+    - run:
+        name: Install lsof
+        command: |
+          sudo apt-get install lsof
+    - run:
+        name: Install native dev tools
+        command: |
+          sudo apt-get update
+          sudo apt-get -y install gcc g++ zlib1g-dev
+    - run:
+        name: Download GraalVM
+        command: |2-
+
+          cd ~
+          if ! [ -d graalvm-ce-java11-21.3.0 ]; then
+            curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
+            tar xzf graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
+          fi
+    - run:
+        name: Build binary
+        command: bb native-image
+        no_output_timeout: 30m
+    - run:
+        name: Run tests
+        command: bb test
+    - run:
+        name: Release
+        command: |
+          .circleci/script/release
+    - save_cache:
+        paths:
+        - ~/.m2
+        - ~/graalvm-ce-java11-21.3.0
+        key: linux-{{ checksum "project.clj" }}-{{ checksum ".circleci/config.yml" }}
+    - store_artifacts:
+        path: /tmp/release
+        destination: release
   mac:
     macos:
       xcode: 12.0.0
@@ -174,4 +246,5 @@ workflows:
     jobs:
     - jvm
     - linux
+    - linux-aarch64
     - mac
