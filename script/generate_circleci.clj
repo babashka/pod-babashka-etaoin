@@ -40,8 +40,8 @@ sudo ./linux-install-1.10.3.1058.sh"}}
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}
@@ -83,8 +83,8 @@ fi"}}
                                          :BABASHKA_PLATFORM "linux"
                                          :POD_ARCH "aarch64"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "arm.large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}

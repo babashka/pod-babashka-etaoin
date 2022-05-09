@@ -47,7 +47,7 @@ jobs:
       BABASHKA_PLATFORM: linux
       BABASHKA_XMX: -J-Xmx7g
       POD_TEST_ENV: native
-      resource_class: large
+    resource_class: large
     steps:
     - checkout
     - run:
@@ -119,7 +119,7 @@ jobs:
       POD_ARCH: aarch64
       BABASHKA_XMX: -J-Xmx7g
       POD_TEST_ENV: native
-      resource_class: large
+    resource_class: arm.large
     steps:
     - checkout
     - run:
