@@ -191,4 +191,4 @@ jobs:
 workflows:
   version: 2
   ci:
-    jobs: [jvm, linux, mac]
+    jobs: [jvm, linux, linux-aarch64, mac]
