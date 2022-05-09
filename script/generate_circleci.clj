@@ -109,7 +109,8 @@ fi"}}
                        {:run {:name "Build binary",
                               :command "bb native-image",
                               :no_output_timeout "30m"}}
-                       run-tests
+                       {:run {:name "Run tests",
+                              :command "echo 'Skipping tests for ARM'"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
