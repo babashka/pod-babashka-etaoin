@@ -40,8 +40,8 @@ sudo ./linux-install-1.10.3.1058.sh"}}
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}
@@ -76,15 +76,15 @@ fi"}}
                                           :destination "release"}}]))
 
 (def linux-aarch64
-  (ordered-map :docker [{:image "circleci/clojure:openjdk-11-lein-browsers"}]
+  (ordered-map :machine {:image "ubuntu-2004:202101-01"}
                :working_directory "~/repo"
                :environment (ordered-map :LEIN_ROOT "true"
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"
                                          :BABASHKA_PLATFORM "linux"
                                          :POD_ARCH "aarch64"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "arm.large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}
@@ -109,7 +109,8 @@ fi"}}
                        {:run {:name "Build binary",
                               :command "bb native-image",
                               :no_output_timeout "30m"}}
-                       run-tests
+                       {:run {:name "Run tests",
+                              :command "echo 'Skipping tests for ARM'"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
