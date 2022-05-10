@@ -40,8 +40,8 @@ sudo ./linux-install-1.10.3.1058.sh"}}
                                          :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"
                                          :BABASHKA_PLATFORM "linux"
                                          :BABASHKA_XMX "-J-Xmx7g"
-                                         :POD_TEST_ENV "native"
-                                         :resource_class "large")
+                                         :POD_TEST_ENV "native")
+               :resource_class "large"
                :steps ["checkout"
                        {:run {:name "Pull Submodules",
                               :command "git submodule init\ngit submodule update\n"}}
@@ -67,6 +67,50 @@ fi"}}
                               :command "bb native-image",
                               :no_output_timeout "30m"}}
                        run-tests
+                       {:run {:name "Release",
+                              :command ".circleci/script/release\n"}}
+                       {:save_cache {:paths ["~/.m2"
+                                             "~/graalvm-ce-java11-21.3.0"],
+                                     :key "linux-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"}}
+                       {:store_artifacts {:path "/tmp/release",
+                                          :destination "release"}}]))
+
+(def linux-aarch64
+  (ordered-map :machine {:image "ubuntu-2004:202101-01"}
+               :working_directory "~/repo"
+               :environment (ordered-map :LEIN_ROOT "true"
+                                         :GRAALVM_HOME "/home/circleci/graalvm-ce-java11-21.3.0"
+                                         :BABASHKA_PLATFORM "linux"
+                                         :POD_ARCH "aarch64"
+                                         :BABASHKA_XMX "-J-Xmx7g"
+                                         :POD_TEST_ENV "native")
+               :resource_class "arm.large"
+               :steps ["checkout"
+                       {:run {:name "Pull Submodules",
+                              :command "git submodule init\ngit submodule update\n"}}
+                       {:restore_cache {:keys ["linux-{{ checksum \"project.clj\" }}-{{ checksum \".circleci/config.yml\" }}"]}}
+                       {:run {:name "Install Clojure",
+                              :command "
+wget https://download.clojure.org/install/linux-install-1.10.3.1058.sh
+chmod +x linux-install-1.10.3.1058.sh
+sudo ./linux-install-1.10.3.1058.sh"}}
+                       install-babashka
+                       {:run {:name "Install lsof",
+                              :command "sudo apt-get install lsof\n"}}
+                       {:run {:name "Install native dev tools",
+                              :command "sudo apt-get update\nsudo apt-get -y install gcc g++ zlib1g-dev\n"}}
+                       {:run {:name "Download GraalVM",
+                              :command "
+cd ~
+if ! [ -d graalvm-ce-java11-21.3.0 ]; then
+  curl -O -sL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
+  tar xzf graalvm-ce-java11-linux-aarch64-21.3.0.tar.gz
+fi"}}
+                       {:run {:name "Build binary",
+                              :command "bb native-image",
+                              :no_output_timeout "30m"}}
+                       {:run {:name "Run tests",
+                              :command "echo 'Skipping tests for ARM'"}}
                        {:run {:name "Release",
                               :command ".circleci/script/release\n"}}
                        {:save_cache {:paths ["~/.m2"
@@ -121,11 +165,13 @@ fi"}}
    :jobs (ordered-map
           :jvm jvm
           :linux linux
+          :linux-aarch64 linux-aarch64
           :mac mac),
    :workflows (ordered-map
                :version 2
                :ci {:jobs ["jvm"
                            "linux"
+                           "linux-aarch64"
                            "mac"]})))
 
 (require '[clj-yaml.core :as yaml])

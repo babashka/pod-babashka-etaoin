@@ -5,12 +5,13 @@ mkdir -p /tmp/release
 cp "pod-babashka-etaoin" /tmp/release
 
 VERSION=$(cat resources/POD_VERSION)
+ARCH=${POD_ARCH:-amd64}
 
 cd /tmp/release
 
 ## release binary as zip archive
 
-zip "pod-babashka-etaoin-$VERSION-$BABASHKA_PLATFORM-amd64.zip" "pod-babashka-etaoin"
+zip "pod-babashka-etaoin-$VERSION-$BABASHKA_PLATFORM-$ARCH.zip" "pod-babashka-etaoin"
 
 ## cleanup
 
