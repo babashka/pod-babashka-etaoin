@@ -1,4 +1,8 @@
-# pod-babashka-etaoin
+> # pod-babashka-etaoin <sup>* *deprecated*</sup>
+>
+> **Great news! :tada:** [Etaoin](https://github.com/clj-commons/etaoin) is now babashka compatible!
+This means that this pod is no longer necessary, and will no longer be maintained.
+Please use [Etaoin](https://github.com/clj-commons/etaoin) instead.
 
 [Babashka](https://github.com/borkdude/babashka)
 [pod](https://github.com/babashka/babashka.pods) wrapping
